@@ -1,8 +1,8 @@
-// Money Entry — service worker
-// Caches the app shell only. All entry data always comes live
-// from Firebase Firestore and is never cached here.
+// Money Entry — PWA Service Worker
+// Caches the app shell for offline loading.
+// Entry data streams in real-time from Firebase Firestore.
 
-const CACHE_NAME = "money-entry-shell-v1";
+const CACHE_NAME = "money-entry-pwa-v2";
 
 const APP_SHELL = [
   "./",
@@ -11,10 +11,10 @@ const APP_SHELL = [
   "./app.js",
   "./firebase-config.js",
   "./manifest.json",
-  "./icons/logo.svg",
   "./icons/logo.png",
   "./icons/icon-192.png",
-  "./icons/icon-512.png"
+  "./icons/icon-512.png",
+  "./icons/icon-maskable-512.png"
 ];
 
 self.addEventListener("install", (event) => {
@@ -34,8 +34,6 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   const req = event.request;
 
-  // Only handle same-origin GET requests for the app shell.
-  // Firestore, Google Fonts, and CDN script requests pass straight to the network.
   if (req.method !== "GET" || new URL(req.url).origin !== self.location.origin) {
     return;
   }

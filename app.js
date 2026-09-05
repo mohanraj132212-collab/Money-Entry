@@ -1154,7 +1154,60 @@ helpModalBackdrop.addEventListener("click", (e) => {
 });
 
 /* ---------------------------------------------------------
-   10. Initialization
+   10. PWA Service Worker & Installation Handler
+--------------------------------------------------------- */
+let deferredPrompt = null;
+const pwaInstallBtn = document.getElementById("pwaInstallBtn");
+const pwaStatusText = document.getElementById("pwaStatusText");
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (pwaInstallBtn) {
+    pwaInstallBtn.hidden = false;
+  }
+  if (pwaStatusText) {
+    pwaStatusText.textContent = "Ready to install as a standalone app";
+  }
+});
+
+if (pwaInstallBtn) {
+  pwaInstallBtn.addEventListener("click", async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === "accepted") {
+        showToast("Money Entry installed successfully ✓");
+        pwaInstallBtn.hidden = true;
+        if (pwaStatusText) pwaStatusText.textContent = "App is installed";
+      }
+      deferredPrompt = null;
+    } else {
+      showToast("App install prompt is ready or already installed.");
+    }
+  });
+}
+
+window.addEventListener("appinstalled", () => {
+  deferredPrompt = null;
+  if (pwaInstallBtn) pwaInstallBtn.hidden = true;
+  if (pwaStatusText) pwaStatusText.textContent = "App is installed";
+  showToast("Money Entry installed on home screen ✓");
+});
+
+// Register Service Worker
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").then((reg) => {
+      console.log("ServiceWorker registration successful:", reg.scope);
+    }).catch((err) => {
+      console.warn("ServiceWorker registration failed:", err);
+    });
+  });
+}
+
+/* ---------------------------------------------------------
+   11. Initialization
 --------------------------------------------------------- */
 document.addEventListener("DOMContentLoaded", () => {
   applyTheme(activeTheme);

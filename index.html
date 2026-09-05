@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Money Entry — Professional Balance Management</title>
 <meta name="description" content="Track money given to people, remaining balances to return, aggregated analytics, and PDF financial records.">
-<meta name="theme-color" content="#17332B">
+<meta name="theme-color" content="#09090B">
 
 <!-- PWA & Favicon -->
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" href="icons/logo.png">
 <link rel="apple-touch-icon" href="icons/logo.png">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Money Entry">
@@ -501,6 +502,23 @@
               </div>
               <button class="btn btn-secondary" id="settingsPdfBtn" type="button">
                 Download PDF
+              </button>
+            </div>
+          </div>
+
+          <!-- PWA Progressive Web App Install Card -->
+          <div class="settings-card" id="pwaInstallCard">
+            <h3>Progressive Web App</h3>
+            <p>Install Money Entry directly on your device home screen for standalone offline access.</p>
+            
+            <div class="setting-row">
+              <div>
+                <span class="setting-title">App Installation</span>
+                <span class="setting-desc" id="pwaStatusText">Install as a standalone app on Mobile or Desktop</span>
+              </div>
+              <button class="btn btn-primary" id="pwaInstallBtn" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Install App
               </button>
             </div>
           </div>
