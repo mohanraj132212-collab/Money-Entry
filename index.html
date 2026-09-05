@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Money Entry — Professional Balance Management</title>
+<meta name="description" content="Track money given to people, remaining balances to return, aggregated analytics, and PDF financial records.">
+<meta name="theme-color" content="#17332B">
+
+<!-- PWA & Favicon -->
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icons/logo.png">
+<link rel="apple-touch-icon" href="icons/logo.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Money Entry">
+
+<!-- Typography -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="system">
+
+<div class="app-layout">
+
+  <!-- Desktop Left Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="brand">
+        <img src="icons/logo.png" alt="Money Entry Logo" class="brand-logo" width="40" height="40">
+        <div class="brand-info">
+          <span class="brand-title">Money Entry</span>
+          <span class="brand-subtitle">Balance Manager</span>
+        </div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-item active" data-view="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+        <span>Dashboard</span>
+      </button>
+
+      <button class="nav-item" data-view="add-entry">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        <span>Add Entry</span>
+      </button>
+
+      <button class="nav-item" data-view="all-entries">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        <span>All Entries</span>
+      </button>
+
+      <button class="nav-item" data-view="people">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span>People</span>
+      </button>
+
+      <button class="nav-item" data-view="reports">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <span>Reports</span>
+      </button>
+
+      <button class="nav-item" data-view="settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Settings</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="footer-btn" id="helpModalBtn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>Help & Guide</span>
+      </button>
+      <div class="app-version-badge">
+        <span class="status-dot online" id="sidebarSyncDot"></span>
+        <span id="sidebarSyncText">Firebase Connected</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Workspace -->
+  <main class="main-wrapper">
+
+    <!-- Desktop Top Header -->
+    <header class="top-bar">
+      <div class="mobile-brand">
+        <img src="icons/logo.png" alt="Money Entry Logo" width="32" height="32">
+        <span class="mobile-brand-title">Money Entry</span>
+      </div>
+
+      <div class="header-titles">
+        <h1 class="page-title" id="pageTitle">Dashboard</h1>
+        <p class="page-subtitle" id="pageSubtitle">Overview of money given and active balances</p>
+      </div>
+
+      <div class="header-actions">
+        <!-- Global Search Bar -->
+        <div class="header-search" id="headerSearchBox">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="globalSearchInput" placeholder="Search person or reason…" autocomplete="off">
+          <button type="button" class="clear-search-btn" id="clearSearchBtn" hidden>&times;</button>
+        </div>
+
+        <div class="sync-badge" id="topSyncBadge">
+          <span class="badge-dot"></span>
+          <span class="badge-text" id="topSyncText">Synced</span>
+        </div>
+
+        <button class="icon-action-btn" id="quickAddTopBtn" data-view="add-entry" title="Add Entry" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Views Container -->
+    <div class="content-area">
+
+      <!-- View 1: Dashboard -->
+      <section class="view-pane active" id="view-dashboard">
+        <div class="dashboard-welcome">
+          <div class="welcome-text">
+            <h2>Financial Overview</h2>
+            <p>Track remaining balances expected to be returned.</p>
+          </div>
+          <button class="btn btn-primary" data-view="add-entry" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Entry
+          </button>
+        </div>
+
+        <!-- Metric Cards -->
+        <div class="metrics-grid">
+          <!-- Total Balance (Highlighted / Primary) -->
+          <div class="metric-card hero-card balance-card">
+            <div class="card-top">
+              <div class="card-icon balance-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              </div>
+              <span class="card-tag">Expected Back</span>
+            </div>
+            <div class="card-body">
+              <span class="card-label">Total Balance Remaining</span>
+              <div class="card-value hero-value" id="dashTotalBalance">₹0</div>
+              <p class="card-subtext">Outstanding money left to return</p>
+            </div>
+          </div>
+
+          <!-- Total Amount -->
+          <div class="metric-card amount-card">
+            <div class="card-top">
+              <div class="card-icon amount-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
+              </div>
+            </div>
+            <div class="card-body">
+              <span class="card-label">Total Money Given</span>
+              <div class="card-value" id="dashTotalAmount">₹0</div>
+              <p class="card-subtext">Sum of all entries recorded</p>
+            </div>
+          </div>
+
+          <!-- Total Entries -->
+          <div class="metric-card entries-card">
+            <div class="card-top">
+              <div class="card-icon count-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+            </div>
+            <div class="card-body">
+              <span class="card-label">Total Entries</span>
+              <div class="card-value" id="dashTotalEntries">0</div>
+              <p class="card-subtext">Recorded transactions</p>
+            </div>
+          </div>
+
+          <!-- Unique People -->
+          <div class="metric-card people-card">
+            <div class="card-top">
+              <div class="card-icon people-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+            </div>
+            <div class="card-body">
+              <span class="card-label">People Recorded</span>
+              <div class="card-value" id="dashTotalPeople">0</div>
+              <p class="card-subtext">Unique borrowers</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Recent Entries Table -->
+        <div class="section-block">
+          <div class="section-header">
+            <h3>Recent Entries</h3>
+            <button class="link-btn" data-view="all-entries" type="button">View All &rarr;</button>
+          </div>
+          <div class="recent-list-container" id="dashRecentContainer">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- View 2: Add Entry -->
+      <section class="view-pane" id="view-add-entry">
+        <div class="form-container-card">
+          <div class="form-card-header">
+            <h2>Add New Entry</h2>
+            <p>Record money given to a person and track the balance remaining to return.</p>
+          </div>
+
+          <form id="addEntryForm" class="money-form" novalidate>
+            <div class="form-grid">
+              <div class="form-group" id="addGroupWho">
+                <label for="addWhoInput">Who <span class="req">*</span></label>
+                <div class="input-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  <input type="text" id="addWhoInput" placeholder="Enter person's name" autocomplete="off" required>
+                </div>
+                <span class="field-error">Please enter the person's name.</span>
+              </div>
+
+              <div class="form-group" id="addGroupReason">
+                <label for="addReasonInput">Reason <span class="req">*</span></label>
+                <div class="input-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                  <input type="text" id="addReasonInput" placeholder="Why was the money given?" autocomplete="off" required>
+                </div>
+                <span class="field-error">Please enter a reason.</span>
+              </div>
+
+              <div class="form-group" id="addGroupAmount">
+                <label for="addAmountInput">Amount <span class="req">*</span></label>
+                <div class="input-wrapper currency-wrapper">
+                  <span class="currency-prefix">₹</span>
+                  <input type="number" id="addAmountInput" step="any" min="0" placeholder="Enter amount" inputmode="decimal" required>
+                </div>
+                <span class="field-error">Please enter a valid positive amount.</span>
+              </div>
+
+              <div class="form-group" id="addGroupBalance">
+                <label for="addBalanceInput">Balance <span class="req">*</span></label>
+                <div class="input-wrapper currency-wrapper">
+                  <span class="currency-prefix">₹</span>
+                  <input type="number" id="addBalanceInput" step="any" min="0" placeholder="Remaining balance" inputmode="decimal" required>
+                </div>
+                <span class="field-error" id="addBalanceError">Balance cannot be greater than the amount.</span>
+              </div>
+            </div>
+
+            <div class="balance-helper-notice">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              <span><strong>Note:</strong> Balance is the remaining amount expected back. (e.g. Given ₹500, spent ₹350 &rarr; Balance = ₹150).</span>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn-secondary" id="addClearBtn">Reset</button>
+              <button type="submit" class="btn btn-primary btn-large" id="addSubmitBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                Save Entry
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- View 3: All Entries -->
+      <section class="view-pane" id="view-all-entries">
+        <!-- Controls Toolbar -->
+        <div class="toolbar-card">
+          <div class="toolbar-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="entriesSearchInput" placeholder="Filter by name or reason…" autocomplete="off">
+          </div>
+
+          <div class="toolbar-filters">
+            <div class="filter-group">
+              <label for="filterStatus">Status:</label>
+              <select id="filterStatus" class="select-control">
+                <option value="all">All Entries</option>
+                <option value="remaining">Balance Remaining (&gt; ₹0)</option>
+                <option value="settled">Fully Settled (₹0)</option>
+              </select>
+            </div>
+
+            <div class="pdf-dropdown-wrapper">
+              <button class="btn btn-secondary pdf-main-btn" id="pdfMenuBtn" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/></svg>
+                Download PDF &#x25BE;
+              </button>
+              <div class="dropdown-menu" id="pdfDropdown">
+                <button class="dropdown-item" id="downloadCurrentPdfBtn" type="button">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  Download Current Results
+                </button>
+                <button class="dropdown-item" id="downloadAllPdfBtn" type="button">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  Download All Entries
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Entries Display Container -->
+        <div id="allEntriesListContainer">
+          <!-- Desktop Data Table -->
+          <div class="desktop-table-wrapper">
+            <table class="entries-table">
+              <thead>
+                <tr>
+                  <th>Person</th>
+                  <th>Reason</th>
+                  <th class="text-right">Amount</th>
+                  <th class="text-right">Balance</th>
+                  <th class="text-center">Status</th>
+                  <th class="text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="entriesTableBody">
+                <!-- Rows injected dynamically -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Mobile Cards Container -->
+          <div class="mobile-cards-grid" id="entriesCardsGrid">
+            <!-- Cards injected dynamically -->
+          </div>
+        </div>
+
+        <!-- Loading State -->
+        <div class="loading-state-box" id="entriesLoadingState">
+          <div class="spinner"></div>
+          <p>Loading entries from Firebase Firestore…</p>
+        </div>
+
+        <!-- Error State -->
+        <div class="error-state-box" id="entriesErrorState" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <p>Unable to load entries. Please check your connection and try again.</p>
+          <button class="btn btn-secondary" id="retryFetchBtn" type="button">Retry Connection</button>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state-card" id="entriesEmptyState" hidden>
+          <div class="empty-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+          </div>
+          <h3>No money entries yet</h3>
+          <p>Start by adding your first entry to keep track of money given and active balances.</p>
+          <button class="btn btn-primary" data-view="add-entry" type="button">
+            Add Entry
+          </button>
+        </div>
+      </section>
+
+      <!-- View 4: People -->
+      <section class="view-pane" id="view-people">
+        <div class="view-header-row">
+          <div>
+            <h2>People Ledger</h2>
+            <p>Aggregated totals per unique person</p>
+          </div>
+          <div class="people-search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="peopleSearchInput" placeholder="Search person name…" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="people-grid" id="peopleGrid">
+          <!-- Dynamically populated -->
+        </div>
+
+        <div class="empty-state-card" id="peopleEmptyState" hidden>
+          <h3>No people recorded yet</h3>
+          <p>Once you add money entries, people will automatically be listed here.</p>
+        </div>
+      </section>
+
+      <!-- View 5: Reports -->
+      <section class="view-pane" id="view-reports">
+        <div class="view-header-row">
+          <div>
+            <h2>Financial Reports</h2>
+            <p>Visual breakdown of total amounts given vs. remaining balance</p>
+          </div>
+          <button class="btn btn-secondary" id="reportPdfBtn" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/></svg>
+            Download Summary PDF
+          </button>
+        </div>
+
+        <div class="reports-summary-cards">
+          <div class="report-stat-card">
+            <span class="report-stat-label">Total Amount Given</span>
+            <span class="report-stat-val" id="repTotalAmount">₹0</span>
+          </div>
+          <div class="report-stat-card highlight">
+            <span class="report-stat-label">Total Balance Remaining</span>
+            <span class="report-stat-val" id="repTotalBalance">₹0</span>
+          </div>
+          <div class="report-stat-card">
+            <span class="report-stat-label">Total Settled Amount</span>
+            <span class="report-stat-val" id="repTotalSettled">₹0</span>
+          </div>
+          <div class="report-stat-card">
+            <span class="report-stat-label">Settlement Ratio</span>
+            <span class="report-stat-val" id="repSettlementRate">0%</span>
+          </div>
+        </div>
+
+        <!-- Visual Charts Grid -->
+        <div class="charts-grid">
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <h3>Amount vs Balance</h3>
+              <p>Comparison of overall money given vs outstanding balance</p>
+            </div>
+            <div class="chart-canvas-container">
+              <canvas id="chartAmountVsBalance"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <h3>Top Active Balances</h3>
+              <p>People with the largest remaining balances to return</p>
+            </div>
+            <div class="chart-canvas-container">
+              <canvas id="chartTopDebtors"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- View 6: Settings -->
+      <section class="view-pane" id="view-settings">
+        <div class="settings-stack">
+          <!-- Appearance -->
+          <div class="settings-card">
+            <h3>Appearance</h3>
+            <p>Customize the look and feel of Money Entry</p>
+            
+            <div class="setting-row">
+              <div>
+                <span class="setting-title">Theme Mode</span>
+                <span class="setting-desc">Switch between light mode and sleek dark mode</span>
+              </div>
+              <div class="theme-picker-pills" id="themePicker">
+                <button type="button" class="theme-pill active" data-theme="system">System</button>
+                <button type="button" class="theme-pill" data-theme="light">Light</button>
+                <button type="button" class="theme-pill" data-theme="dark">Dark</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Currency -->
+          <div class="settings-card">
+            <h3>Currency Settings</h3>
+            <p>Primary currency symbol used across records</p>
+            
+            <div class="setting-row">
+              <div>
+                <span class="setting-title">Default Currency</span>
+                <span class="setting-desc">Indian Rupee (₹ INR)</span>
+              </div>
+              <select id="currencySelect" class="select-control">
+                <option value="₹">₹ INR (Indian Rupee)</option>
+                <option value="$">$ USD (US Dollar)</option>
+                <option value="€">€ EUR (Euro)</option>
+                <option value="£">£ GBP (British Pound)</option>
+                <option value="AED">AED (UAE Dirham)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Database & Data Controls -->
+          <div class="settings-card">
+            <h3>Data & Database</h3>
+            <p>Permanent storage backed by Firebase Firestore</p>
+            
+            <div class="setting-row">
+              <div>
+                <span class="setting-title">Firebase Collection</span>
+                <span class="setting-desc"><code>moneyEntries</code></span>
+              </div>
+              <button class="btn btn-secondary" id="refreshDataBtn" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                Refresh Data
+              </button>
+            </div>
+
+            <div class="setting-row">
+              <div>
+                <span class="setting-title">Export Records</span>
+                <span class="setting-desc">Generate PDF financial document</span>
+              </div>
+              <button class="btn btn-secondary" id="settingsPdfBtn" type="button">
+                Download PDF
+              </button>
+            </div>
+          </div>
+
+          <!-- App Information -->
+          <div class="settings-card">
+            <h3>About Application</h3>
+            
+            <div class="app-info-block">
+              <img src="icons/logo.png" alt="Money Entry Logo" width="48" height="48">
+              <div>
+                <strong>Money Entry & Balance Management</strong>
+                <p>Version 1.2.0 • Real-world Finance Management</p>
+                <p class="muted">All entries are stored in real-time in Firebase Firestore.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Mobile Bottom Navigation Bar -->
+  <nav class="mobile-nav">
+    <button class="mobile-nav-item active" data-view="dashboard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+      <span>Home</span>
+    </button>
+
+    <button class="mobile-nav-item" data-view="all-entries">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <span>Entries</span>
+    </button>
+
+    <button class="mobile-nav-item nav-add-btn" data-view="add-entry" title="Add Entry">
+      <div class="add-fab-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </div>
+      <span>Add</span>
+    </button>
+
+    <button class="mobile-nav-item" data-view="reports">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <span>Reports</span>
+    </button>
+
+    <button class="mobile-nav-item" data-view="settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span>Settings</span>
+    </button>
+  </nav>
+
+</div>
+
+<!-- Modal 1: Edit Entry Modal -->
+<div class="modal-backdrop" id="editModalBackdrop">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>Edit Money Entry</h3>
+      <button type="button" class="close-modal-btn" id="closeEditModalBtn">&times;</button>
+    </div>
+
+    <form id="editEntryForm" novalidate>
+      <input type="hidden" id="editEntryId">
+
+      <div class="form-group" id="editGroupWho">
+        <label for="editWhoInput">Who <span class="req">*</span></label>
+        <input type="text" id="editWhoInput" class="input-control" placeholder="Enter person's name" required>
+        <span class="field-error">Please enter a person name.</span>
+      </div>
+
+      <div class="form-group" id="editGroupReason">
+        <label for="editReasonInput">Reason <span class="req">*</span></label>
+        <input type="text" id="editReasonInput" class="input-control" placeholder="Why was the money given?" required>
+        <span class="field-error">Please enter a reason.</span>
+      </div>
+
+      <div class="form-grid-2">
+        <div class="form-group" id="editGroupAmount">
+          <label for="editAmountInput">Amount <span class="req">*</span></label>
+          <input type="number" id="editAmountInput" class="input-control" step="any" min="0" required>
+          <span class="field-error">Valid positive amount required.</span>
+        </div>
+
+        <div class="form-group" id="editGroupBalance">
+          <label for="editBalanceInput">Balance <span class="req">*</span></label>
+          <input type="number" id="editBalanceInput" class="input-control" step="any" min="0" required>
+          <span class="field-error" id="editBalanceError">Balance cannot be greater than the amount.</span>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" id="cancelEditModalBtn">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="saveEditModalBtn">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal 2: Delete Confirmation Modal -->
+<div class="modal-backdrop" id="deleteModalBackdrop">
+  <div class="modal-card dialog-card">
+    <div class="modal-header">
+      <h3 class="danger-title">Delete Entry</h3>
+      <button type="button" class="close-modal-btn" id="closeDeleteModalBtn">&times;</button>
+    </div>
+    <div class="dialog-body">
+      <p class="dialog-msg" id="deleteModalMsg">Are you sure you want to delete this money entry?</p>
+      <p class="dialog-sub">This action will delete the record from Firebase Firestore permanently.</p>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-secondary" id="cancelDeleteBtn">Cancel</button>
+      <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 3: Person Details Modal -->
+<div class="modal-backdrop" id="personModalBackdrop">
+  <div class="modal-card wide-card">
+    <div class="modal-header">
+      <div>
+        <h3 id="personModalTitle">Person Ledger</h3>
+        <p class="modal-sub" id="personModalSub">Entries for person</p>
+      </div>
+      <button type="button" class="close-modal-btn" id="closePersonModalBtn">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="person-summary-bar">
+        <div>Total Given: <strong id="personModalTotalAmount">₹0</strong></div>
+        <div>Current Balance: <strong id="personModalTotalBalance" class="highlight-txt">₹0</strong></div>
+        <div>Entries: <strong id="personModalCount">0</strong></div>
+      </div>
+      <div class="person-entries-list" id="personModalEntriesList">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 4: Help & Guide Modal -->
+<div class="modal-backdrop" id="helpModalBackdrop">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>Money Entry — Quick Guide</h3>
+      <button type="button" class="close-modal-btn" id="closeHelpModalBtn">&times;</button>
+    </div>
+    <div class="help-content">
+      <h4>Core Concept & Balance Logic</h4>
+      <p>Money Entry records money given to individuals and tracks how much balance remains to be returned.</p>
+      <ul>
+        <li><strong>Who:</strong> Name of the person who received money.</li>
+        <li><strong>Reason:</strong> Description or purpose of transaction.</li>
+        <li><strong>Amount:</strong> Total money given (e.g. ₹500).</li>
+        <li><strong>Balance:</strong> Remaining amount that should come back to you (e.g. ₹150).</li>
+        <li><strong>Validation:</strong> Balance can never exceed Amount.</li>
+      </ul>
+      <h4>Features & Storage</h4>
+      <ul>
+        <li><strong>Firebase Firestore:</strong> All records are synchronized in real-time.</li>
+        <li><strong>PDF Export:</strong> Generate printable statements for all entries or filtered search results.</li>
+        <li><strong>Responsive Experience:</strong> Dedicated desktop sidebar navigation and mobile-optimized bottom navigation.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notifications -->
+<div class="toast-container" id="toastContainer">
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <div class="toast-icon" id="toastIcon">✓</div>
+    <span class="toast-message" id="toastMessage">Action completed successfully</span>
+  </div>
+</div>
+
+<!-- External Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- App Scripts -->
+<script type="module" src="firebase-config.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
